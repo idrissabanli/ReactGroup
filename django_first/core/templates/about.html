@@ -1,13 +1,14 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1>Hello World!</h1>
-    <h6>Your name is {{user}}</h6>
-    <p>Current time: {{now}}</p>
+    <h1>Python</h1>
+    <img src="{% static 'images/python-logo.png' %}" alt="">
 </body>
 </html>
