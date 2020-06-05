@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {{msg|truncatechars:"10"}} <a href="/">more</a> 
+
+    <h6>{{new_date|date:"F d, Y"}}</h6>
+
+    {{html_context|safe}}
+
+    {{a|slice:":3"}}
+    <br>
+    {{pi|floatformat:"2"}}
+
+    <ul>
+    {% for item in a %}
+        <li>{{item}}</li>
+    {% endfor %}
+    
+    </ul>   
+</body>
+</html>
