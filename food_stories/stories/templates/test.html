@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load filters %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+    {{msg|split_tag:" "}}
     {{msg|truncatechars:"10"}} <a href="/">more</a> 
 
     <h6>{{new_date|date:"F d, Y"}}</h6>

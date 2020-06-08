@@ -21,3 +21,10 @@ def test(request):
         'a': a,
     }
     return render(request, 'test.html', context)
+
+
+def recipes(request):
+    return render(request, 'recipes.html')
+
+def recipe_detail(request):
+    return render(request, 'single.html')
