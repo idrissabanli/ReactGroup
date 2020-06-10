@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from datetime import date
+from stories.models import Recipe
 
 def home(request):
     return render(request, 'index.html')
@@ -24,7 +25,11 @@ def test(request):
 
 
 def recipes(request):
-    return render(request, 'recipes.html')
+    recipe_list = Recipe.objects.all() # [{title:"sdjf", "image": "/sjhd/skjdf/p.png"}]
+    context = {
+        'recipes': recipe_list
+    }
+    return render(request, 'recipes.html', context)
 
 def recipe_detail(request):
     return render(request, 'single.html')
