@@ -42,7 +42,7 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
-
+# book = Book.objects.create(title="Book 1", description="knfkdsnf", price=12.5, page_count=50, cover_image='/home/idris/book.jpg',
 class Book(models.Model):
     # relations
     author = models.ForeignKey(Author, related_name='books', on_delete=models.CASCADE)
