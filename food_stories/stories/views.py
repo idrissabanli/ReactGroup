@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from datetime import date
 from stories.models import Recipe
+from stories.forms import ContactForm, LoginForm
+from django.contrib import messages
 
 def home(request):
     return render(request, 'index.html')
@@ -33,3 +35,25 @@ def recipes(request):
 
 def recipe_detail(request):
     return render(request, 'single.html')
+
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(data=request.POST)
+        if form.is_valid():
+            print('ok-dir')
+            form.save()
+            messages.success(request, 'Mesajiniz Ugurla gonderildi!')
+            return redirect('/')
+    else:
+        form = ContactForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'contact.html', context)
+
+def login(request):
+    form = LoginForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'login.html', context)

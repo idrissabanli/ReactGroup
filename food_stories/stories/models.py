@@ -51,3 +51,21 @@ class Recipe(models.Model):
 
     def __str__(self):
         return f"title: {self.title}  category: {self.get_category_display()}"
+
+
+class Contact(models.Model):
+    user_name = models.CharField('User name', max_length=50)
+    user_email = models.EmailField('User email', max_length=50)
+    subject = models.CharField('Subject', max_length=255)
+    message = models.TextField('Message')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Contact"
+        verbose_name_plural = "Contacts"
+    
+    def __str__(self):
+        return self.user_name
+
