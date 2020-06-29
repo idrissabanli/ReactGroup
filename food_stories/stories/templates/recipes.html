@@ -25,7 +25,7 @@
                     <div class="col-md-6 col-lg-12 ftco-animate">
                         <div class="blog-entry d-lg-flex">
                             <div class="half">
-                                <a href="single.html" class="img d-flex align-items-end"
+                                <a href="{% url 'recipe-detail' recipe.id %}" class="img d-flex align-items-end"
                                    style="background-image: url({% static 'images/image_1.jpg' %});">
                                     <div class="overlay"></div>
                                 </a>
@@ -33,10 +33,10 @@
                             <div class="text px-md-4 px-lg-5 half pt-3">
                                 <p class="meta d-flex"><span class="pr-3">{{ recipe.get_category_display }}</span><span class="ml-auto pl-3">{{recipe.created_at}}</span>
                                 </p>
-                                <h3><a href="single.html">{{ recipe.title }}</a></h3>
+                                <h3><a href="{% url 'recipe-detail' recipe.id %}">{{ recipe.title }}</a></h3>
                                 <p>{{ recipe.short_description }}
                                 </p>
-                                <p class="mb-0"><a href="single.html" class="btn btn-primary">Read More <span
+                                <p class="mb-0"><a href="{% url 'recipe-detail' recipe.id %}" class="btn btn-primary">Read More <span
                                         class="icon-arrow_forward ml-4"></span></a></p>
                             </div>
                         </div>
@@ -44,6 +44,31 @@
                     {% endfor %}
                 </div>
                 <div class="row mt-5">
+                    <div class="col text-center">
+                        <div class="block-27">
+                            <ul>
+                                {% if page_obj.has_previous %}
+                                    <li><a href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                                {% endif %}
+                                
+                                {% for i in page_obj.paginator.page_range %}
+                                    {% if i == page_obj.number %}
+                                        <li class="active"><span>{{i}}</span></li>
+                                    {% else %}
+                                        <li><a href="?page={{i}}">{{i}}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if page_obj.has_next %}
+                                    <li><a href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                                {% endif %}
+        
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="row mt-5">
                     <div class="col text-center">
                         <div class="block-27">
                             <ul>
@@ -57,7 +82,7 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <div class="col-lg-3">

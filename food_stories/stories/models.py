@@ -50,7 +50,7 @@ class Recipe(models.Model):
         ordering = 'created_at',
 
     def __str__(self):
-        return f"title: {self.title}  category: {self.get_category_display()}"
+        return self.title
 
 
 class Contact(models.Model):
