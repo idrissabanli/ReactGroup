@@ -26,12 +26,12 @@
                         <div class="blog-entry d-lg-flex">
                             <div class="half">
                                 <a href="{% url 'recipe-detail' recipe.id %}" class="img d-flex align-items-end"
-                                   style="background-image: url({% static 'images/image_1.jpg' %});">
+                                   style="background-image: url('{{ recipe.image.url }}');">
                                     <div class="overlay"></div>
                                 </a>
                             </div>
                             <div class="text px-md-4 px-lg-5 half pt-3">
-                                <p class="meta d-flex"><span class="pr-3">{{ recipe.get_category_display }}</span><span class="ml-auto pl-3">{{recipe.created_at}}</span>
+                                <p class="meta d-flex"><span class="pr-3">{{ recipe.category.title }}</span><span class="ml-auto pl-3">{{recipe.created_at|date:"F d, Y"}}</span>
                                 </p>
                                 <h3><a href="{% url 'recipe-detail' recipe.id %}">{{ recipe.title }}</a></h3>
                                 <p>{{ recipe.short_description }}

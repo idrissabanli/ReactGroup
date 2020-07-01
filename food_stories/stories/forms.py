@@ -27,14 +27,14 @@ class ContactForm(forms.ModelForm):
         }
 
 
-class LoginForm(forms.Form):
-    username = forms.CharField(label="Istifadeci adi", help_text="Bura istifadeci adi yazilmalidir", required=False, widget=forms.TextInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Write your username'
-    }))
-    password = forms.CharField(label="Sifre", required=False, widget=forms.PasswordInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Write your password'
-    }))
-    # class Meta:
+# class LoginForm(forms.Form):
+#     username = forms.CharField(label="Istifadeci adi", help_text="Bura istifadeci adi yazilmalidir", required=False, widget=forms.TextInput(attrs={
+#         'class': 'form-control',
+#         'placeholder': 'Write your username'
+#     }))
+#     password = forms.CharField(label="Sifre", required=False, widget=forms.PasswordInput(attrs={
+#         'class': 'form-control',
+#         'placeholder': 'Write your password'
+#     }))
+#     # class Meta:
         

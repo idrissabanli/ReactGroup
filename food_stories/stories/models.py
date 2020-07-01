@@ -18,7 +18,7 @@ class Author(models.Model):
 
 class Category(models.Model):
     title = models.CharField('Title', max_length=50)
-    image = models.ImageField('Şəkil', upload_to="media/categories/")
+    image = models.ImageField('Şəkil', upload_to="categories/")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -32,9 +32,8 @@ class Category(models.Model):
 
 
 class Recipe(models.Model):
-    
     title = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='media/recipes/')
+    image = models.ImageField(upload_to='recipes/')
     short_description = models.TextField(max_length=1000, help_text="bu reseptler siyahisinda cixacaq metindir")
     long_description = models.TextField(null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)

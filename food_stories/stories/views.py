@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView, ListView, DetailView, TemplateView
 from datetime import date
 from stories.models import Recipe
-from stories.forms import ContactForm, LoginForm
+from stories.forms import ContactForm
 from django.contrib import messages
 
 def home(request):
@@ -79,9 +79,9 @@ class ContactView(CreateView):
         return super().form_valid(*args, **kwargs)
 
 
-def login(request):
-    form = LoginForm()
-    context = {
-        'form': form
-    }
-    return render(request, 'login.html', context)
+# def login(request):
+#     form = LoginForm()
+#     context = {
+#         'form': form
+#     }
+#     return render(request, 'login.html', context)
