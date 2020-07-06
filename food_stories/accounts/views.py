@@ -1,13 +1,36 @@
 from django.shortcuts import render
-from accounts.forms import RegisterForm
+from accounts.forms import RegisterForm, LoginForm
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from accounts.tasks import send_confirmation_email, account_activation_token
 from django.contrib.auth import get_user_model
 from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth import authenticate, login as auth_login
+from django import forms
+
 
 User = get_user_model()
+
+
+def login(request):
+    if request.method == 'GET':
+        form = LoginForm()
+    else:
+        user_data = request.POST
+        form = LoginForm(user_data)
+        if form.is_valid():
+            user = authenticate(request, **form.cleaned_data)
+            if user:
+                auth_login(request, user)
+                return redirect('/')
+            else:
+                messages.error(request, 'Please enter the correct username and password for a staff account. Note that both fields may be case-sensitive.')
+    context = {
+        'form': form,
+    }
+    return render(request, 'sign_in.html', context)
 
 def register(request):
     if request.method == 'POST':

@@ -1,8 +1,35 @@
 from django.contrib.auth import get_user_model
 from django import forms
 from django.contrib.auth.password_validation import validate_password
+from django.shortcuts import redirect
+from django.contrib.auth import authenticate, login
 
 USER_MODEL = get_user_model()
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=40, widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Username'
+    }))
+    password = forms.CharField(max_length=40, widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Password'
+    }))
+
+    # def __init__(self, request=None, *args, **kwargs):
+    #     self.request = request
+    #     super().__init__(*args, **kwargs)
+
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     request = self.request
+    #     user = authenticate(request, **cleaned_data)
+    #     if user:
+    #         login(request, user)
+    #     else:
+    #         raise forms.ValidationError('Please enter the correct username and password for a staff account. Note that both fields may be case-sensitive.')
+    #     return cleaned_data
 
 class RegisterForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={
