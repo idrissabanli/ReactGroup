@@ -52,6 +52,26 @@ class Recipe(models.Model):
         return self.title
 
 
+class Story(models.Model):
+    title = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='recipes/')
+    long_description = models.TextField(null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        # db_table = "stories"
+        verbose_name = "Hekaye"
+        verbose_name_plural = "Hekayeler"
+        ordering = 'created_at',
+
+    def __str__(self):
+        return self.title
+
+
 class Contact(models.Model):
     user_name = models.CharField('User name', max_length=50)
     user_email = models.EmailField('User email', max_length=50)

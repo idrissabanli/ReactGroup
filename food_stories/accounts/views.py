@@ -7,7 +7,7 @@ from accounts.tasks import send_confirmation_email, account_activation_token
 from django.contrib.auth import get_user_model
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django import forms
 
 
@@ -31,6 +31,11 @@ def login(request):
         'form': form,
     }
     return render(request, 'sign_in.html', context)
+
+
+# def logout(request):
+#     auth_logout(request)
+#     return redirect('/')
 
 def register(request):
     if request.method == 'POST':
@@ -68,3 +73,4 @@ def activate(request, uidb64, token):
     else:
         messages.error(request, 'User not activated' )
         return redirect('/')
+

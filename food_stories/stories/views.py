@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, ListView, DetailView, TemplateView
 from datetime import date
-from stories.models import Recipe
+from stories.models import Recipe, Story
 from stories.forms import ContactForm
 from django.contrib import messages
 
@@ -43,6 +43,13 @@ class RecipeList(ListView):
     model = Recipe
     template_name = 'recipes.html'
     context_object_name = 'recipes'
+    paginate_by = 2
+
+
+class StoryList(ListView):
+    model = Story
+    template_name = 'stories.html'
+    # context_object_name = 'recipes'
     paginate_by = 2
 
 

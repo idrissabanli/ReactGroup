@@ -9,7 +9,7 @@ services:
       - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: 123
-      MYSQL_DATABASE: "food_stories"
+      MYSQL_DATABASE: "food_stories_new"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

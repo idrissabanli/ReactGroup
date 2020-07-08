@@ -1,5 +1,5 @@
 from django.contrib import admin
-from stories.models import Recipe, Author, Category, Contact
+from stories.models import Recipe, Author, Category, Contact, Story
 # Register your models here.
 
 class RecipeAdmin(admin.ModelAdmin):
@@ -22,4 +22,5 @@ class RecipeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Recipe, RecipeAdmin)
+admin.site.register(Story)
 admin.site.register([Author, Category, Contact])

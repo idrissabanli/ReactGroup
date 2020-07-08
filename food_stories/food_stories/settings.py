@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
     'stories',
     'accounts',
 ]
+
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -123,6 +126,9 @@ USE_L10N = True
 USE_TZ = True
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+
+LOGOUT_REDIRECT_URL = reverse_lazy('home')
 
 JET_THEMES = [
     {
