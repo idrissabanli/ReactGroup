@@ -1,12 +1,14 @@
 from django.contrib import admin
-from stories.models import Recipe, Author, Category, Contact, Story
+from stories.models import Recipe, Category, Contact, Story, About
+from stories.forms import RecipeForm
 # Register your models here.
 
 class RecipeAdmin(admin.ModelAdmin):
+    form = RecipeForm
     list_display = ('title', 'category', 'author', 'created_at', )
     ordering = ('title',)
     search_fields = ('title', 'category__title', 'author__description',)
-    list_filter = ('category__title', 'author__full_name',)
+    list_filter = ('category__title', 'author__username',)
     # readonly_fields = ('title','category',)
     fieldsets = (
         ('Relations', {
@@ -23,4 +25,4 @@ class RecipeAdmin(admin.ModelAdmin):
 
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Story)
-admin.site.register([Author, Category, Contact])
+admin.site.register([Category, Contact, About])

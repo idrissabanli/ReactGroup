@@ -1,19 +1,23 @@
 from django.db import models
+from django.contrib.auth import get_user_model
+from ckeditor.fields import RichTextField
 
-class Author(models.Model):
-    full_name = models.CharField('Tam Adı', max_length=60)
-    description = models.TextField()
-    image = models.ImageField(upload_to="media/authors/")
+User = get_user_model()
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+# class Author(models.Model):
+#     full_name = models.CharField('Tam Adı', max_length=60)
+#     description = models.TextField()
+#     image = models.ImageField(upload_to="media/authors/")
 
-    class Meta:
-        verbose_name = 'Müəllif'
-        verbose_name_plural = 'Müəlliflər'
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+
+#     class Meta:
+#         verbose_name = 'Müəllif'
+#         verbose_name_plural = 'Müəlliflər'
     
-    def __str__(self):
-        return self.full_name
+#     def __str__(self):
+#         return self.full_name
 
 
 class Category(models.Model):
@@ -35,9 +39,9 @@ class Recipe(models.Model):
     title = models.CharField(max_length=255)
     image = models.ImageField(upload_to='recipes/')
     short_description = models.TextField(max_length=1000, help_text="bu reseptler siyahisinda cixacaq metindir")
-    long_description = models.TextField(null=True, blank=True)
+    long_description = RichTextField(null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -55,9 +59,9 @@ class Recipe(models.Model):
 class Story(models.Model):
     title = models.CharField(max_length=255)
     image = models.ImageField(upload_to='recipes/')
-    long_description = models.TextField(null=True, blank=True)
+    long_description = RichTextField(null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -88,3 +92,21 @@ class Contact(models.Model):
     def __str__(self):
         return self.user_name
 
+
+class About(models.Model):
+    title = models.CharField('Title', max_length=50)
+    phone_number = models.CharField('Phone Number', max_length=20)
+    location = models.CharField('Location', max_length=50)
+    email = models.EmailField('Email', max_length=30)
+    description = models.TextField('Description')
+    daily_visitors = models.PositiveIntegerField('Daile Visitors',)
+    facebook_page_url = models.URLField('Facebook page url')
+    instagram_page_url = models.URLField('Instagram page url')
+    twitter_page_url = models.URLField('Twitter page url')
+
+    class Meta:
+        verbose_name = 'About Site Information'
+        verbose_name_plural = 'About Site Informations'
+    
+    def __str__(self):
+        return self.title

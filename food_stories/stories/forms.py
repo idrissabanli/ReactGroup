@@ -1,5 +1,6 @@
 from django import forms
-from stories.models import Contact
+from stories.models import Contact, Recipe
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 class ContactForm(forms.ModelForm):
     # website = forms.CharField()
@@ -25,6 +26,16 @@ class ContactForm(forms.ModelForm):
                 'placeholder': 'Message'
             }),
         }
+
+
+class RecipeForm(forms.ModelForm):
+    long_description = forms.CharField(widget=CKEditorUploadingWidget())
+
+    class Meta:
+        model = Recipe
+        fields = '__all__'
+
+
 
 
 # class LoginForm(forms.Form):
