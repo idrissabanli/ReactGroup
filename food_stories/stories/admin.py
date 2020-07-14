@@ -1,5 +1,5 @@
 from django.contrib import admin
-from stories.models import Recipe, Category, Contact, Story, About
+from stories.models import Recipe, Category, Contact, Story, About, Tag
 from stories.forms import RecipeForm
 # Register your models here.
 
@@ -13,7 +13,7 @@ class RecipeAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Relations', {
             'description': 'This for relations',
-            'fields': ('category', 'author')
+            'fields': ('category', 'author', 'tags',)
         }),
         ('Informations', {
             # 'classes': ('collapse',),
@@ -25,4 +25,4 @@ class RecipeAdmin(admin.ModelAdmin):
 
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Story)
-admin.site.register([Category, Contact, About])
+admin.site.register([Category, Contact, About, Tag])

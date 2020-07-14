@@ -20,6 +20,20 @@ User = get_user_model()
 #         return self.full_name
 
 
+class Tag(models.Model):
+    title = models.CharField('Title', max_length=20)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Tag'
+        verbose_name_plural = 'Tags'
+
+    def __str__(self):
+        return self.title
+
+
 class Category(models.Model):
     title = models.CharField('Title', max_length=50)
     image = models.ImageField('Şəkil', upload_to="categories/")
@@ -36,13 +50,19 @@ class Category(models.Model):
 
 
 class Recipe(models.Model):
+    # relations
+    tags = models.ManyToManyField(Tag, related_name='recipes')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    #information
     title = models.CharField(max_length=255)
     image = models.ImageField(upload_to='recipes/')
     short_description = models.TextField(max_length=1000, help_text="bu reseptler siyahisinda cixacaq metindir")
     long_description = RichTextField(null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    
+
+    # moderation
+    is_published = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -57,6 +77,8 @@ class Recipe(models.Model):
 
 
 class Story(models.Model):
+    tags = models.ManyToManyField(Tag, related_name='stories')
+
     title = models.CharField(max_length=255)
     image = models.ImageField(upload_to='recipes/')
     long_description = RichTextField(null=True, blank=True)
