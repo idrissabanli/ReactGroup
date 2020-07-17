@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from stories.models import Recipe, Category, Tag, Story
+from stories.models import Recipe, Category, Tag, Story, Subscriber
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 
@@ -125,4 +125,11 @@ class StorySerializer(serializers.ModelSerializer):
             'author',
             'created_at',
             'updated_at'
+        )
+
+class SubscriberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscriber
+        fields = (
+            'email',
         )

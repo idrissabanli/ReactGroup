@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_celery_beat',
 
     'stories',
     'accounts',
@@ -148,6 +149,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Baku'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

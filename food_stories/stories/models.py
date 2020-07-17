@@ -132,3 +132,20 @@ class About(models.Model):
     
     def __str__(self):
         return self.title
+
+    
+class Subscriber(models.Model):
+    #informations
+    email = models.EmailField('Email', max_length=30, unique=True)
+
+    # moderations
+    is_active = models.BooleanField('is_active', default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Subscriber"
+        verbose_name_plural = "Subscribers"
+    
+    def __str__(self):
+        return self.email

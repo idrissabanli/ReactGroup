@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load static %}
+{% load static custom_tags %}
 <html lang="en">
 
 <head>
@@ -55,6 +55,37 @@
     {% block content %}
 
     {% endblock %}
+
+
+    <section class="ftco-subscribe ftco-section bg-light">
+        <div class="overlay">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-8 text-wrap text-center heading-section ftco-animate">
+                        <h2 class="mb-4"><span>Subcribe to our Newsletter</span></h2>
+                        <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                        <div class="row d-flex justify-content-center mt-4 mb-4">
+                            <div class="col-md-8">
+                                <form  method="POST" class="subscribe-form">
+                                    {% get_subscriber_form as form %}
+                                    {{form.non_field_errors}}
+                                    <div class="form-group d-flex">
+                                        {% csrf_token %}
+                                        {{form.email}}
+                                        {{form.email.errors}}
+                                        {{form.email.help_text}}
+                                        <!-- <input type="text" class="form-control" placeholder="Enter email address"> -->
+                                        <input type="submit" value="Subscribe" class="submit px-3">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     
     {% include 'includes/footer.html' %}
 
@@ -67,6 +98,7 @@
         </svg>
     </div>
 
+    
 
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
@@ -83,6 +115,24 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
     <script src="{% static 'js/google-map.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+
+    <script>
+        document.querySelector('.subscribe-form').addEventListener('submit', function(e){
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'api:subscribe' %}",
+                method: 'POST',
+                success: function(data){
+                    alert(data)
+                },
+                error: function(error_data){
+                    alert('error');
+                    alert(error_data);
+                }
+            })
+        });
+
+    </script>
 
 </body>
 

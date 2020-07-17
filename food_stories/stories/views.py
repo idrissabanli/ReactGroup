@@ -2,11 +2,17 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView, ListView, DetailView, TemplateView
 from datetime import date
 from stories.models import Recipe, Story
-from stories.forms import ContactForm
+from stories.forms import ContactForm, SubscriberForm
 from django.contrib import messages
+from django.urls import reverse_lazy
 
-def home(request):
-    return render(request, 'index.html')
+
+
+# def home(request):
+#     return render(request, 'index.html')
+
+class Home(TemplateView):
+    template_name = 'index.html'
 
 # def about(request):
 #     return render(request, 'about.html')
@@ -56,6 +62,31 @@ class StoryList(ListView):
 class RecipeDetail(DetailView):
     model = Recipe
     template_name = 'single.html'
+
+from stories.tasks import dump_database
+from django.http import HttpResponse
+
+def dump(request):
+    dump_database.delay()
+    return HttpResponse('Database dump olunur!')
+
+
+class SubscribeView(CreateView):
+    form_class = SubscriberForm
+    success_url = reverse_lazy('home')
+    http_method_names = ('post',)
+
+    def form_valid(self, *args, **kwargs):
+        messages.success(self.request, 'Ugurla subscribe oldunuz her gun bilgilendirileceksiniz!')
+        return super().form_valid(*args, **kwargs)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, 'Dogru email daxil edin!')
+        return redirect(reverse_lazy('home'))
+
+
+
+
 
 
 # def recipe_detail(request):

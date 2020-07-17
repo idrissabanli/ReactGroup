@@ -1,12 +1,15 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from stories.models import Recipe
-from api.serializers import RecipeReadSerializer, RecipeSerializer, RegisterSerializer
+from api.serializers import RecipeReadSerializer, RecipeSerializer, RegisterSerializer, SubscriberSerializer
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.decorators import api_view
 from django.contrib.auth.decorators import login_required
 from rest_framework.status import HTTP_201_CREATED, HTTP_200_OK, HTTP_204_NO_CONTENT
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 
+from rest_framework.generics import CreateAPIView
 
 @api_view(('GET', 'POST',))
 def recipes(request):
@@ -63,8 +66,6 @@ def recipe_detail(request, recipe_id):
         return Response(status=HTTP_204_NO_CONTENT)
 
 
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
 
 class CustomAuthToken(ObtainAuthToken):
 
@@ -82,3 +83,7 @@ class CustomAuthToken(ObtainAuthToken):
             'user_data': register_serializer.data,
             
         })
+
+
+class SubscriberAPIView(CreateAPIView):
+    serializer_class = SubscriberSerializer
