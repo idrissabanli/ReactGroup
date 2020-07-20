@@ -291,6 +291,8 @@ CKEDITOR_CONFIGS = {
     }
 }
 
+SITE_ADDRESS = 'http://localhost:8000'
+
 # Email configuration 
 # change your custom smtp configuration
 EMAIL_HOST = 'smtp.gmail.com'

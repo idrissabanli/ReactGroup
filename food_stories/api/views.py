@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.status import HTTP_201_CREATED, HTTP_200_OK, HTTP_204_NO_CONTENT
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from stories.utils import CsrfExemptSessionAuthentication
+from rest_framework.authentication import BasicAuthentication
 
 from rest_framework.generics import CreateAPIView
 
@@ -86,4 +88,5 @@ class CustomAuthToken(ObtainAuthToken):
 
 
 class SubscriberAPIView(CreateAPIView):
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
     serializer_class = SubscriberSerializer

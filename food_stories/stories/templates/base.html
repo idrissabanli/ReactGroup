@@ -70,13 +70,15 @@
                                     {% get_subscriber_form as form %}
                                     {{form.non_field_errors}}
                                     <div class="form-group d-flex">
-                                        {% csrf_token %}
                                         {{form.email}}
-                                        {{form.email.errors}}
+                                        
                                         {{form.email.help_text}}
+                                        
                                         <!-- <input type="text" class="form-control" placeholder="Enter email address"> -->
                                         <input type="submit" value="Subscribe" class="submit px-3">
+                                        
                                     </div>
+                                
                                 </form>
                             </div>
                         </div>
@@ -86,6 +88,17 @@
         </div>
     </section>
 
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          
+          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="toast-body">
+         
+        </div>
+      </div>
     
     {% include 'includes/footer.html' %}
 
@@ -117,21 +130,38 @@
     <script src="{% static 'js/main.js' %}"></script>
 
     <script>
+        $('.toast').toast({
+            autohide: false,
+        });
         document.querySelector('.subscribe-form').addEventListener('submit', function(e){
             e.preventDefault();
+            const form_data = {
+                email: document.querySelector('.subscribe-form [name="email"]').value,
+            }
+            console.log(form_data);
             $.ajax({
                 url: "{% url 'api:subscribe' %}",
                 method: 'POST',
+                data: form_data,
                 success: function(data){
-                    alert(data)
+                    alert('success');
+                  
                 },
                 error: function(error_data){
                     alert('error');
+                    console.log(error_data);
+                    for(let error in error_data.responseJSON){
+                        $('.toast > .toast-body').text(error_data.responseJSON[error]);
+                        $('.toast').toast('show');
+
+                    }
+                    
+                    
                     alert(error_data);
                 }
             })
         });
-
+        
     </script>
 
 </body>

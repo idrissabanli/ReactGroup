@@ -1,3 +1,4 @@
+import math
 from django.db import models
 from django.contrib.auth import get_user_model
 from ckeditor.fields import RichTextField
@@ -60,6 +61,7 @@ class Recipe(models.Model):
     image = models.ImageField(upload_to='recipes/')
     short_description = models.TextField(max_length=1000, help_text="bu reseptler siyahisinda cixacaq metindir")
     long_description = RichTextField(null=True, blank=True)
+    min_read_time = models.PositiveIntegerField("Min read time", editable=False)
 
     # moderation
     is_published = models.BooleanField(default=True)
@@ -74,6 +76,12 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def save(self, *args, **kwargs):
+        length_long_desc = len(self.long_description.split(' '))
+        min_read_sec = length_long_desc/2
+        self.min_read_time = math.ceil(min_read_sec/60)
+        super().save(*args, **kwargs)
 
 
 class Story(models.Model):
@@ -84,6 +92,7 @@ class Story(models.Model):
     long_description = RichTextField(null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    min_read_time = models.PositiveIntegerField("Min read time", editable=False, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -96,6 +105,12 @@ class Story(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        length_long_desc = len(self.long_description.split(' '))
+        min_read_sec = length_long_desc/2
+        self.min_read_time = math.ceil(min_read_sec/60)
+        super().save(*args, **kwargs)
 
 
 class Contact(models.Model):

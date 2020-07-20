@@ -27,6 +27,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
 
+
     class Meta:
         model = Recipe
         fields = (
@@ -113,6 +114,32 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class StorySerializer(serializers.ModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    
+    class Meta:
+        model = Story
+        fields = (
+            'id',
+            'tags',
+            'title',
+            'image',
+            'long_description',
+            'category',
+            'author',
+            'created_at',
+            'updated_at'
+        )
+    
+    def validate(self, data):
+        request = self.context.get('request')
+        data['author'] = request.user
+        return super().validate(data)
+
+
+class StoryReadSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+    tags = TagSerializer(many=True)
+
     class Meta:
         model = Story
         fields = (
