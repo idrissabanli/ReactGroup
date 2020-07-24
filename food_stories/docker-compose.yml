@@ -1,26 +1,45 @@
 version: '3'
 
 services:
-  # db:
-  #   image: mysql
-  #   command: --default-authentication-plugin=mysql_native_password
-  #   restart: always
-  #   ports:
-  #     - 3306:3306
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: 123
-  #     MYSQL_DATABASE: "food_stories_new"
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    restart: "always"
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/vhost/:/etc/nginx/vhost.d:ro
+      - ./nginx/conf.d/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf:ro
+      - ./static/:/code/static/
+      - ./media/:/code/media/
 
-  # phpmyadmin:
-  #   image: phpmyadmin/phpmyadmin
-  #   restart: always
-  #   ports:
-  #     - 8080:80
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: 123
-  #   links:
-  #     - db
+  postgres:
+    image: postgres
+    volumes:
+      - ./postgresdb/:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: 'stories_db_name'
+      POSTGRES_USER: 'stories_db_user'
+      POSTGRES_PASSWORD: '12345'
 
+  web:
+    build: .
+    restart: "always"
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/code
+      - ./static/:/code/static/
+      - ./media/:/code/media/
+    depends_on:
+      - "postgres"
+    environment:
+      - VIRTUAL_HOST=localhost
+      - VIRTUAL_PORT=8000
+      - DEBUG=False
+    
   redis:
     image: redis
     restart: "always"
