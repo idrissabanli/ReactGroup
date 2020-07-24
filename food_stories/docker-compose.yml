@@ -39,6 +39,24 @@ services:
       - VIRTUAL_HOST=35.237.196.194,localhost
       - VIRTUAL_PORT=8000
       - DEBUG=False
+
+  celery:
+    build: 
+      context: .
+      dockerfile: celery.dockerfile
+    restart: "always"
+    volumes:
+      - .:/code
+      - ./static/:/code/static/
+      - ./media/:/code/media/
+    depends_on:
+      - "postgres"
+      - "redis"
+    environment:
+      - VIRTUAL_HOST=35.237.196.194,localhost
+      - VIRTUAL_PORT=8000
+      - DEBUG=False
+    
     
   redis:
     image: redis
