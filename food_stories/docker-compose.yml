@@ -40,20 +40,20 @@ services:
       - VIRTUAL_PORT=8000
       - DEBUG=False
 
-  # celery:
-  #   build: 
-  #     context: .
-  #     dockerfile: celery.dockerfile
-  #   restart: "always"
-  #   volumes:
-  #     - .:/code
-  #     - ./static/:/code/static/
-  #     - ./media/:/code/media/
-  #   depends_on:
-  #     - "postgres"
-  #     - "redis"
-  #   environment:
-  #     - DEBUG=False
+  celery:
+    build: 
+      context: .
+      dockerfile: celery.dockerfile
+    restart: "always"
+    volumes:
+      - .:/code
+      - ./static/:/code/static/
+      - ./media/:/code/media/
+    depends_on:
+      - "postgres"
+      - "redis"
+    environment:
+      - DEBUG=False
     
     
   redis:

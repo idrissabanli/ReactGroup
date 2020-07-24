@@ -5,4 +5,4 @@ WORKDIR /code
 RUN pip install -r requirements.txt
 ADD . .
 
-CMD [ "celery", "-A", "food_stories",  "worker", "--beat", "--scheduler", "django", "--loglevel=info" ]
+CMD [ "gunicorn", "--bind", "0.0.0.0", "-p", "8000",  "food_stories.wsgi" ]
