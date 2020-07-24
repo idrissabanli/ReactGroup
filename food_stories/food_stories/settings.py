@@ -160,7 +160,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-if PROD
+if PROD:
     CELERY_BROKER_URL = 'redis://redis:6379'
     CELERY_RESULT_BACKEND = 'redis://redis:6379'
     CELERY_ACCEPT_CONTENT = ['application/json']
