@@ -1,5 +1,5 @@
 from django import forms
-from stories.models import Contact, Recipe, Subscriber
+from stories.models import Contact, Recipe, Subscriber, Story, Tag
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 class ContactForm(forms.ModelForm):
@@ -48,6 +48,35 @@ class SubscriberForm(forms.ModelForm):
                 'placeholder': 'Enter email address',
             }),
         }
+
+
+class StoryForm(forms.ModelForm):
+    long_description = forms.CharField(widget=CKEditorUploadingWidget())
+
+    class Meta:
+        model = Story
+        fields = (
+            'title',
+            'image',
+            'long_description',
+            'tags',
+            'category',
+        )
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Title',
+            }),
+            'tags': forms.SelectMultiple(attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Tags',
+                }),
+            'category': forms.Select(attrs={
+                'class': 'form-control',
+                'placeholder': 'Tags',
+            }),
+        }
+
 
 
 # class LoginForm(forms.Form):

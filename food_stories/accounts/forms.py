@@ -3,11 +3,14 @@ from django import forms
 from django.contrib.auth.password_validation import validate_password
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
 
 USER_MODEL = get_user_model()
 
 
-class LoginForm(forms.Form):
+
+
+class LoginForm(AuthenticationForm):
     username = forms.CharField(max_length=40, widget=forms.TextInput(attrs={
         'class': 'form-control',
         'placeholder': 'Username'

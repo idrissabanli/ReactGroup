@@ -251,6 +251,8 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_FILENAME_GENERATOR = 'stories.utils.get_filename'
 CKEDITOR_CONFIGS = {
     'default': {
+        'height': '100%',
+        'width': '100%',
         'skin': 'moono',
         # 'skin': 'office2013',
         'toolbar_Basic': [

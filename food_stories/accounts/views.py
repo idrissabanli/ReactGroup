@@ -9,28 +9,34 @@ from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django import forms
+from django.contrib.auth.views import LoginView
 
 
 User = get_user_model()
 
 
-def login(request):
-    if request.method == 'GET':
-        form = LoginForm()
-    else:
-        user_data = request.POST
-        form = LoginForm(user_data)
-        if form.is_valid():
-            user = authenticate(request, **form.cleaned_data)
-            if user:
-                auth_login(request, user)
-                return redirect('/')
-            else:
-                messages.error(request, 'Please enter the correct username and password for a staff account. Note that both fields may be case-sensitive.')
-    context = {
-        'form': form,
-    }
-    return render(request, 'sign_in.html', context)
+class CustomLoginView(LoginView):
+    form_class = LoginForm
+    template_name = 'sign_in.html'
+
+
+# def login(request):
+#     if request.method == 'GET':
+#         form = LoginForm()
+#     else:
+#         user_data = request.POST
+#         form = LoginForm(user_data)
+#         if form.is_valid():
+#             user = authenticate(request, **form.cleaned_data)
+#             if user:
+#                 auth_login(request, user)
+#                 return redirect('/')
+#             else:
+#                 messages.error(request, 'Please enter the correct username and password for a staff account. Note that both fields may be case-sensitive.')
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, 'sign_in.html', context)
 
 
 # def logout(request):

@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView, ListView, DetailView, TemplateView
 from datetime import date
 from stories.models import Recipe, Story
-from stories.forms import ContactForm, SubscriberForm
+from stories.forms import ContactForm, SubscriberForm, StoryForm
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -84,6 +85,21 @@ class SubscribeView(CreateView):
         messages.error(self.request, 'Dogru email daxil edin!')
         return redirect(reverse_lazy('home'))
 
+
+class UserProfile(LoginRequiredMixin, TemplateView):
+    template_name = 'user-profile.html'
+
+
+class CreateStory(LoginRequiredMixin, CreateView):
+    form_class = StoryForm
+    template_name = 'create_story.html'
+    success_url = '/'
+
+    def form_valid(self, form):
+        story = form.save(commit=False)
+        story.author = self.request.user
+        story.save()
+        return super().form_valid(form)
 
 
 
