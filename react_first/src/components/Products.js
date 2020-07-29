@@ -1,23 +1,31 @@
 import React, { Component } from 'react';
-import Product from './Product'
+import Product from './Product';
+import {ProductConsumer} from '../context';
 
 class Products extends Component {
     render() {
-        const {products, removeProduct} = this.props;
-
         return (
-            <div className="row">
+            <ProductConsumer>
                 {
-                    products.map(product => {
+                    value => {
+                        const {products} = value;
                         return (
-                            <Product removeProduct={removeProduct} key={product.id} {...product} />
+                            <div className="row">
+                                {
+                                    products.map(product => {
+                                        return (
+                                            <Product key={product.id} {...product} />
+                                        )
+                                    })
+                                }
+                            </div>
                         )
-                    })
+                    }
                 }
-                
-                
-            </div>
+            </ProductConsumer>
         )
+
+        
     }
 }
 
