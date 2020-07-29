@@ -11,7 +11,6 @@ class Product extends Component {
             isVisable: !this.state.isVisable,
         })
     }
-
     deleteProduct  = (dispatch) => {
         const {id} = this.props;
         dispatch({type:"DELETE", payload:id});
