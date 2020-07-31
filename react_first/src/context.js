@@ -1,4 +1,5 @@
 import React from "react";
+import axios from 'axios';
 
 const Context = React.createContext();
 
@@ -8,6 +9,10 @@ const reducer = (state, action) => {
             ...state,
             products: state.products.filter(product => { return product.id !== action.payload }) 
         };
+        case "ADD_PRODUCT" : return { 
+          ...state,
+          products: [...state.products, action.payload]
+      };
         default: return state;
     }
 };
@@ -15,36 +20,20 @@ const reducer = (state, action) => {
 export class ProductProvider extends React.Component {
     
     state = {
-        products : [
-          {
-            id: 1,
-            title: 'IPhone 7',
-            image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone11-purple-select-2019?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1566960958082',
-            description: 'IPhone 7 desc'
-          },
-          {
-            id: 2,
-            title: 'IPhone 8',
-            image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone11-purple-select-2019?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1566960958082',
-            description: 'IPhone 8 desc'
-          },
-          {
-            id: 3,
-            title: 'IPhone 10',
-            image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone11-purple-select-2019?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1566960958082',
-            description: 'IPhone 10 desc'
-          },
-          {
-            id: 4,
-            title: 'IPhone 11',
-            image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone11-purple-select-2019?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1566960958082',
-            description: 'IPhone 11 desc'
-          },
-        ],
+        products : [],
         dispatch: action => {
             this.setState(state => reducer(state, action));
         },
-      }  
+      }
+    
+    componentDidMount = async () =>{
+      const response = await axios.get('http://localhost:8000/api/products/');
+      console.log(response);
+      this.setState({
+        ...this.state,
+        products: response.data
+      })
+    }
     
     render() {
       const { children } = this.props;

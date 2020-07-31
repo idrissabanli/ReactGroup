@@ -1,23 +1,33 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import {ProductConsumer} from '../context';
+import axios from 'axios';
 
 class Product extends Component {
     state = {
         isVisable: true
     }
+
     changeVisable() {
         this.setState({
             isVisable: !this.state.isVisable,
         })
     }
-    deleteProduct  = (dispatch) => {
+    deleteProduct  = async (dispatch) => {
         const {id} = this.props;
-        dispatch({type:"DELETE", payload:id});
+        const response = await axios.delete(`http://localhost:8000/api/products/${id}/`);
+        if (response.status==204){
+            dispatch({type:"DELETE", payload:id});
+        }
     }
 
+    componentDidUpdate(){
+        console.log('inside componentDidUpdate');
+    }
+
+    
     render() {
-        const {title, image, description} = this.props;
+        const {name, image, price} = this.props;
         const visibility = this.state.isVisable ? "visible" : "invisible" 
         return (
             <ProductConsumer>
@@ -25,13 +35,13 @@ class Product extends Component {
                     value => {
                         const {dispatch} = value;
                         return (
-                                <div className="col-3">
+                                <div className="col-3 mb-5">
                                     <div className="card">
                                         <img className="card-img-top" src={image} alt="Card image cap"/>
                                         <div className="card-body">
-                                            <h5 className="card-title">{title}</h5>
+                                            <h5 className="card-title">{name}</h5>
                                                 
-                                            <p className={"card-text " + visibility }>{description}</p>
+                                            <p className={"card-text " + visibility }>{price}</p>
                                             
                                             <div className="d-flex justify-content-between">
                                                 <a href="#" className="btn btn-primary">Go</a>
@@ -68,13 +78,13 @@ class Product extends Component {
 }
 
 Product.propTypes = {
-    title: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired, 
-    description: PropTypes.string
+    price: PropTypes.string
 }
 
 Product.defaultProps = {
-    description: 'No information'
+    price: 'No information'
 }
 
 
