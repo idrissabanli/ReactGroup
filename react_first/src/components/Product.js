@@ -25,7 +25,6 @@ class Product extends Component {
         console.log('inside componentDidUpdate');
     }
 
-    
     render() {
         const {name, image, price} = this.props;
         const visibility = this.state.isVisable ? "visible" : "invisible" 
