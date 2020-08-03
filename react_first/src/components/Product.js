@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import {ProductConsumer} from '../context';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 class Product extends Component {
     state = {
@@ -16,7 +17,7 @@ class Product extends Component {
     deleteProduct  = async (dispatch) => {
         const {id} = this.props;
         const response = await axios.delete(`http://localhost:8000/api/products/${id}/`);
-        if (response.status==204){
+        if (response.status===204){
             dispatch({type:"DELETE", payload:id});
         }
     }
@@ -26,7 +27,7 @@ class Product extends Component {
     }
 
     render() {
-        const {name, image, price} = this.props;
+        const {id, name, image, price} = this.props;
         const visibility = this.state.isVisable ? "visible" : "invisible" 
         return (
             <ProductConsumer>
@@ -36,16 +37,16 @@ class Product extends Component {
                         return (
                                 <div className="col-3 mb-5">
                                     <div className="card">
-                                        <img className="card-img-top" src={image} alt="Card image cap"/>
+                                        <img className="card-img-top" src={image} />
                                         <div className="card-body">
-                                            <h5 className="card-title">{name}</h5>
+                                            <h5 className="card-title"><Link to={ `detail/${id} `}>{name}</Link></h5>
                                                 
                                             <p className={"card-text " + visibility }>{price}</p>
                                             
                                             <div className="d-flex justify-content-between">
-                                                <a href="#" className="btn btn-primary">Go</a>
                                                 <button onClick={this.changeVisable.bind(this)} className="btn btn-warning">{ this.state.isVisable ? "Hide" : "Show" }</button>
                                                 <button onClick={this.deleteProduct.bind(this, dispatch)} className="btn btn-danger">Delete</button>
+                                                <Link to={ `edit/${id}` } className="btn btn-default">Update Product</Link>
                                             </div>
                                         </div>
                                     </div>
@@ -55,24 +56,7 @@ class Product extends Component {
                 }
             </ProductConsumer>
         )
-        // return (
-        //     <div className="col-3">
-        //         <div className="card">
-        //             <img className="card-img-top" src={image} alt="Card image cap"/>
-        //             <div className="card-body">
-        //                 <h5 className="card-title">{title}</h5>
-                            
-        //                 <p className={"card-text " + visibility }>{description}</p>
-                        
-        //                 <div className="d-flex justify-content-between">
-        //                     <a href="#" className="btn btn-primary">Go</a>
-        //                     <button onClick={this.changeVisable.bind(this)} className="btn btn-warning">{ this.state.isVisable ? "Hide" : "Show" }</button>
-        //                     <button onClick={this.deleteProduct} className="btn btn-danger">Delete</button>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     </div>
-        // )
+        
     }
 }
 

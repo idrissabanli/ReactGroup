@@ -13,6 +13,10 @@ const reducer = (state, action) => {
           ...state,
           products: [...state.products, action.payload]
       };
+      case "UPDATE_PRODUCT" : return { 
+        ...state,
+        products: [...state.products.map(product=> { return product.id === action.payload.id ? action.payload : product }) ]
+    };
         default: return state;
     }
 };
