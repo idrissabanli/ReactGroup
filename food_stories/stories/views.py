@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, ListView, DetailView, TemplateView
+from django.views.generic import CreateView, ListView, DetailView, TemplateView, \
+    UpdateView, DeleteView
 from datetime import date
-from stories.models import Recipe, Story
-from stories.forms import ContactForm, SubscriberForm, StoryForm
+from stories.models import Recipe, Story, Category
+from stories.forms import ContactForm, SubscriberForm, StoryForm, RecipeForm
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -64,6 +65,11 @@ class RecipeDetail(DetailView):
     model = Recipe
     template_name = 'single.html'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
 from stories.tasks import dump_database
 from django.http import HttpResponse
 
@@ -86,13 +92,27 @@ class SubscribeView(CreateView):
         return redirect(reverse_lazy('home'))
 
 
-class UserProfile(LoginRequiredMixin, TemplateView):
+class UserProfile(LoginRequiredMixin, ListView):
+    model = Recipe
     template_name = 'user-profile.html'
+
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = super().get_queryset()
+        return queryset.filter(author=user)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data()
+        context['story_list'] = Story.objects.filter(author=self.request.user)
+        return context
+
+
 
 
 class CreateStory(LoginRequiredMixin, CreateView):
     form_class = StoryForm
-    template_name = 'create_story.html'
+    template_name = 'create_blog.html'
     success_url = '/'
 
     def form_valid(self, form):
@@ -100,6 +120,35 @@ class CreateStory(LoginRequiredMixin, CreateView):
         story.author = self.request.user
         story.save()
         return super().form_valid(form)
+
+
+class CreateRecipe(LoginRequiredMixin, CreateView):
+    form_class = RecipeForm
+    template_name = 'create_blog.html'
+
+    def form_valid(self, form):
+        story = form.save(commit=False)
+        story.author = self.request.user
+        story.save()
+        return super().form_valid(form)
+
+
+class RecipeUpdateView(LoginRequiredMixin, UpdateView):
+    model = Recipe
+    form_class = RecipeForm
+    template_name = 'create_blog.html'
+
+
+class RecipeDeleteView(LoginRequiredMixin, DeleteView):
+    model = Recipe
+    success_url = reverse_lazy('user-profile')
+
+
+    # def form_valid(self, form):
+    #     story = form.save(commit=False)
+    #     story.author = self.request.user
+    #     story.save()
+    #     return super().form_valid(form)
 
 
 

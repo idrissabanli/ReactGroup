@@ -2,6 +2,7 @@ import math
 from django.db import models
 from django.contrib.auth import get_user_model
 from ckeditor.fields import RichTextField
+from django.urls import reverse_lazy
 
 User = get_user_model()
 
@@ -83,6 +84,9 @@ class Recipe(models.Model):
         self.min_read_time = math.ceil(min_read_sec/60)
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse_lazy('recipe-detail', kwargs={'pk': self.id})
+
 
 class Story(models.Model):
     tags = models.ManyToManyField(Tag, related_name='stories')
@@ -111,6 +115,10 @@ class Story(models.Model):
         min_read_sec = length_long_desc/2
         self.min_read_time = math.ceil(min_read_sec/60)
         super().save(*args, **kwargs)
+    
+    # To do make story detail page
+    # def get_absolute_url(self):
+    #     return reverse_lazy('recipe-detail', kwargs={'pk': self.id})
 
 
 class Contact(models.Model):

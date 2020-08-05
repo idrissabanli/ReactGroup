@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     {% block css %}
 
@@ -130,6 +131,7 @@
     <script src="{% static 'js/main.js' %}"></script>
     <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
     <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
     <script>
         $('.toast').toast({
             autohide: false,
@@ -164,6 +166,10 @@
         });
         
     </script>
+
+    {% block js %}
+    
+    {% endblock %}
     
 
 </body>
