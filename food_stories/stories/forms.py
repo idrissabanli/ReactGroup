@@ -1,5 +1,5 @@
 from django import forms
-from stories.models import Contact, Recipe, Subscriber, Story, Tag
+from stories.models import Contact, Recipe, Subscriber, Story, Tag, Comment
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 class ContactForm(forms.ModelForm):
@@ -122,4 +122,18 @@ class RecipeForm(forms.ModelForm):
 #         'placeholder': 'Write your password'
 #     }))
 #     # class Meta:
-        
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = (
+            'comment_msg',
+            'parent_comment',
+        )
+        widgets = {
+            'comment_msg': forms.Textarea(attrs={
+                'class': 'form-control',
+            }),
+            'parent_comment': forms.HiddenInput()
+        }

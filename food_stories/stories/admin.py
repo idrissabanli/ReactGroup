@@ -1,5 +1,5 @@
 from django.contrib import admin
-from stories.models import Recipe, Category, Contact, Story, About, Tag, Subscriber
+from stories.models import Recipe, Category, Contact, Story, About, Tag, Subscriber, Comment
 from stories.forms import RecipeForm
 # Register your models here.
 
@@ -22,7 +22,11 @@ class RecipeAdmin(admin.ModelAdmin):
         }),
     )
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'parent_comment', 'recipe', 'story', 'created_at',)
+
 
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Story)
+admin.site.register(Comment, CommentAdmin)
 admin.site.register([Category, Contact, About, Tag, Subscriber])

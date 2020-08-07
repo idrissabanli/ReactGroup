@@ -172,3 +172,25 @@ class Subscriber(models.Model):
     
     def __str__(self):
         return self.email
+
+
+class Comment(models.Model):
+    # relation's
+    user = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
+    parent_comment = models.ForeignKey('self', related_name='sub_comments', on_delete=models.CASCADE, null=True, blank=True)
+    recipe = models.ForeignKey(Recipe, related_name='comments', on_delete=models.CASCADE, null=True, blank=True)
+    story = models.ForeignKey(Story, related_name='comments', on_delete=models.CASCADE, null=True, blank=True)
+
+    #information's
+    comment_msg = models.TextField('Comment', )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Comment"
+        verbose_name_plural = "Comments"
+    
+    def __str__(self):
+        return self.user.get_full_name()
+
+

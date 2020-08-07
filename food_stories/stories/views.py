@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, ListView, DetailView, TemplateView, \
     UpdateView, DeleteView
+from django.views.generic.edit import FormMixin
 from datetime import date
-from stories.models import Recipe, Story, Category
-from stories.forms import ContactForm, SubscriberForm, StoryForm, RecipeForm
+from stories.models import Recipe, Story, Category, Comment
+from stories.forms import ContactForm, SubscriberForm, StoryForm, RecipeForm, CommentForm
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -61,13 +62,37 @@ class StoryList(ListView):
     paginate_by = 2
 
 
-class RecipeDetail(DetailView):
+class RecipeDetail(FormMixin, DetailView):
     model = Recipe
+    form_class = CommentForm
     template_name = 'single.html'
+
+    def get_success_url(self):
+        return reverse_lazy("recipe-detail", kwargs={"pk": self.object.id})
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            print(form.cleaned_data)
+            return self.form_valid(form)
+        else:
+            print(form.cleaned_data)
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+        comment.user = self.request.user
+        comment.recipe = self.object
+        comment.save()
+        return super().form_valid(form)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['categories'] = Category.objects.all()
+        recipe = self.object
+        context["form"] = self.get_form()
+        context['parent_comments'] = recipe.comments.filter(parent_comment__isnull=True)
         return context
 
 from stories.tasks import dump_database

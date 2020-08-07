@@ -1,0 +1,20 @@
+{% load static %}
+<li class="comment">
+    <div class="vcard bio">
+        <img src="{{comment.user.avatar}}" alt="Image placeholder">
+    </div>
+    <div class="comment-body">
+        <h3>{{comment.user.get_full_name}}</h3>
+        <div class="meta">{{comment.created_at|date:"F d, Y" }} at {{comment.created_at|date:"H:m" }}</div>
+        <p>{{ comment.comment_msg }}</p>
+        <p><a href="#comment-form" data-user="{{comment.user.get_full_name}}" data-id="{{comment.id}}" class="reply">Reply</a></p>
+    </div>
+    {% if comment.sub_comments.all %}
+    <ul class="children">
+        {% for comment in comment.sub_comments.all %}
+            {% include 'includes/comment.html' %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+</li>
